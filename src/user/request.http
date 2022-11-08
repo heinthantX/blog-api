@@ -3,17 +3,31 @@ POST http://localhost:8000/user HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "second",
-  "username": "username"
+  "name": "first",
+  "username": "username",
+  "email": "heinthantX@gmail.com",
+  "password": "password"
 }
+
+### login user
+POST http://localhost:8000/user/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "heinthantX@gmail.com",
+  "password": "password"
+}
+
 
 ### update user
 PUT http://localhost:8000/user/3 HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "second",
-  "username": "secondUser"
+  "name": "first",
+  "username": "username",
+  "email": "heinthantX@gmail.com",
+  "password": "password"
 }
 
 ### get all users

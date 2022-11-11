@@ -3,9 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { catchError, from, map, Observable, switchMap } from 'rxjs';
 import { AuthService } from 'src/auth/auth.service';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
-import { LoginUserDto } from './dto/login-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserDto } from './models/create-user.dto';
+import { LoginUserDto } from './models/login-user.dto';
+import { UpdateUserDto } from './models/update-user.dto';
 import { User } from './entities/user.entity';
 
 @Injectable()
@@ -47,11 +47,11 @@ export class UserService {
     );
   }
 
-  findOne(id: number): Observable<User> {
-    return from(this.userRepository.findOneBy({ id }));
+  findOne(id: number): Promise<User> {
+    return this.userRepository.findOneBy({ id });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto): Observable<any> {
+  update(id: number, updateUserDto: Partial<CreateUserDto>): Observable<any> {
     return from(this.userRepository.update(id, updateUserDto));
   }
 
@@ -64,7 +64,7 @@ export class UserService {
       switchMap((user: User) => {
         if (user) {
           return this.authService
-            .generateJWT(user)
+            .generateJWT({ id: user.id })
             .pipe(map((jwt: string) => jwt));
         } else {
           return 'Wrong Credentials';
